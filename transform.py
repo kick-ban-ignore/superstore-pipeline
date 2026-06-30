@@ -1,6 +1,6 @@
 # =============================================================================
 # transform.py
-# Phase 2: Run SQL transformations against PostgreSQL
+# Runs SQL transformations against PostgreSQL
 # =============================================================================
 
 import os
@@ -29,18 +29,30 @@ def run_sql_file(engine, filepath: str):
     with open(filepath, "r", encoding="utf-8") as f:
         sql = f.read()
 
-    # Split multiple statements (CREATE VIEW 1, CREATE VIEW 2, ...)
-    statements = [s.strip() for s in sql.split(";") if s.strip()]
+    # Remove single-line comments BEFORE splitting
+    # This prevents comment lines from creating ghost statements
+    import re
+    sql_no_comments = re.sub(r'--[^\n]*', '', sql)
 
-    with engine.begin() as conn:          # begin() = auto commit & rollback
-        for stmt in statements:
+    # Split on semicolons & filter out any empty/whitespace-only statements
+    statements = [
+        s.strip()
+        for s in sql_no_comments.split(";")
+        if s.strip()  # Skip empty strings
+    ]
+
+    print(f"   📝 {len(statements)} statement(s) found")
+
+    with engine.begin() as conn:
+        for i, stmt in enumerate(statements, 1):
+            print(f"   ⚙️  Running statement {i}/{len(statements)} ...")
             conn.execute(text(stmt))
 
     print(f"   ✅ '{filepath}' executed successfully!")
 
 def main():
     print("=" * 55)
-    print("  🔧 Superstore Pipeline – Phase 2: TRANSFORM")
+    print("  🔧 Superstore Pipeline - Phase 2: TRANSFORM")
     print("=" * 55)
 
     engine = create_engine(DB_URL)
