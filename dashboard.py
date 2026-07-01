@@ -156,10 +156,18 @@ total_profit = filtered_df["total_profit"].sum()
 total_orders = filtered_df["total_orders"].sum()
 avg_margin   = (total_profit / total_sales * 100) if total_sales > 0 else 0
 
-col1.metric("💰 Total Sales",    f"${total_sales:,.0f}")
-col2.metric("📈 Total Profit",   f"${total_profit:,.0f}")
-col3.metric("🛒 Total Orders",   f"{total_orders:,.0f}")
-col4.metric("📊 Profit Margin",  f"{avg_margin:.1f}%")
+# European format helper
+# . for thousands separator, , for decimal separator
+def eu_currency(value):
+    return f"${value:,.0f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+def eu_number(value):
+    return f"{value:,.0f}".replace(",", ".")
+
+col1.metric("Total Sales",   eu_currency(total_sales))
+col2.metric("Total Profit",  eu_currency(total_profit))
+col3.metric("Total Orders",  eu_number(total_orders))
+col4.metric("Profit Margin", f"{avg_margin:.1f}%".replace(".", ","))
 
 st.markdown("---")
 
@@ -310,24 +318,57 @@ with col_right2:
     
 # -----------------------------------------------------------------------------
 # 9. DETAILED TABLE
+# -----------------------------------------------------------------------------
 
 st.markdown("---")
 st.subheader("Full Breakdown")
 
-# Format the numbers nicely before displaying
 display_df = filtered_df.copy()
-display_df["total_sales"]         = display_df["total_sales"].map("${:,.2f}".format)
-display_df["total_profit"]        = display_df["total_profit"].map("${:,.2f}".format)
-display_df["total_shipping_cost"] = display_df["total_shipping_cost"].map("${:,.2f}".format)
-display_df["avg_discount_pct"]    = display_df["avg_discount_pct"].map("{:.1f}%".format)
-display_df["profit_margin_pct"]   = display_df["profit_margin_pct"].map("{:.2f}%".format)
-display_df["order_year"]          = display_df["order_year"].astype(int)
-display_df["order_quarter"]       = display_df["order_quarter"].astype(int).map(quarter_labels)
 
+# Clean up year/quarter display
+display_df["order_year"]    = display_df["order_year"].astype(int)
+display_df["order_quarter"] = display_df["order_quarter"].astype(int).map(quarter_labels)
+
+# Rename columns for display
 display_df.columns = [
     "Person", "Category", "Year", "Quarter", "Total Orders", "Total Quantity",
     "Total Sales", "Total Profit", "Total Shipping Cost",
     "Avg Discount %", "Profit Margin %"
 ]
 
-st.dataframe(display_df, use_container_width=True, hide_index=True)
+# Numbers here stay numeric, Streamlit handles the formatting
+st.dataframe(
+    display_df,
+    use_container_width=True,
+    hide_index=True,
+    column_config={
+        "Total Sales": st.column_config.NumberColumn(
+            "Total Sales",
+            format="$ %,.2f",
+        ),
+        "Total Profit": st.column_config.NumberColumn(
+            "Total Profit",
+            format="$ %,.2f",
+        ),
+        "Total Shipping Cost": st.column_config.NumberColumn(
+            "Total Shipping Cost",
+            format="$ %,.2f",
+        ),
+        "Avg Discount %": st.column_config.NumberColumn(
+            "Avg Discount %",
+            format="%.1f%%",
+        ),
+        "Profit Margin %": st.column_config.NumberColumn(
+            "Profit Margin %",
+            format="%.2f%%",
+        ),
+        "Total Orders": st.column_config.NumberColumn(
+            "Total Orders",
+            format="%d",
+        ),
+        "Total Quantity": st.column_config.NumberColumn(
+            "Total Quantity",
+            format="%d",
+        ),
+    }
+)
