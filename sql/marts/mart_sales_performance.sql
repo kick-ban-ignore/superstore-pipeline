@@ -24,6 +24,8 @@ enriched_orders AS (
     SELECT
         o.order_id,
         o.order_date,
+        EXTRACT(YEAR FROM o.order_date)    AS order_year,
+        EXTRACT(QUARTER FROM o.order_date) AS order_quarter,
         o.customer_name,
         o.region,
         o.sales,
@@ -51,6 +53,8 @@ enriched_with_people AS (
 SELECT
     person,
     category,
+    order_year,
+    order_quarter,
     COUNT(DISTINCT order_id)              AS total_orders,
     SUM(quantity)                         AS total_quantity,
     ROUND(SUM(sales), 2)                  AS total_sales,
@@ -60,5 +64,5 @@ SELECT
     ROUND(SUM(profit) /
           NULLIF(SUM(sales), 0) * 100, 2) AS profit_margin_pct  -- Guard against division by zero!
 FROM enriched_with_people
-GROUP BY person, category
-ORDER BY total_profit DESC;
+GROUP BY person, category, order_year, order_quarter
+ORDER BY order_year DESC, order_quarter DESC, total_profit DESC;

@@ -16,6 +16,24 @@ DB_URL = (
     f"/{os.getenv('DB_NAME')}"
 )
 
+# Drop existing views before recreating them
+# Order matters: drop mart first (it depends on staging views)
+DROP_STATEMENTS = [
+    "DROP VIEW IF EXISTS mart_sales_performance",
+    "DROP VIEW IF EXISTS stg_orders",
+    "DROP VIEW IF EXISTS stg_products",
+    "DROP VIEW IF EXISTS stg_people",
+    "DROP VIEW IF EXISTS stg_returned_orders",
+]
+
+def drop_existing_views(engine):
+    """Drop all views before recreating – prevents column order conflicts."""
+    print("\n🗑️  Dropping existing views...")
+    with engine.begin() as conn:
+        for stmt in DROP_STATEMENTS:
+            conn.execute(text(stmt))
+    print("   ✅ All views dropped cleanly!")
+
 # Order is critical: Staging MUST run before Marts!
 SQL_FILES = [
     "sql/staging/stg_orders.sql",
@@ -52,7 +70,7 @@ def run_sql_file(engine, filepath: str):
 
 def main():
     print("=" * 55)
-    print("  🔧 Superstore Pipeline - Phase 2: TRANSFORM")
+    print("Superstore Pipeline - Phase 2: TRANSFORM")
     print("=" * 55)
 
     engine = create_engine(DB_URL)
@@ -64,10 +82,10 @@ def main():
             print(f"   ❌ File not found: '{sql_file}'")
         except Exception as e:
             print(f"   ❌ Error in '{sql_file}': {e}")
-            return  # Stop immediately on error – order matters!
+            return  # Stop immediately on error
 
     print("\n" + "=" * 55)
-    print("  🏁 Transforms done! Views are live in PostgreSQL.")
+    print("Transforms done! Views are live in PostgreSQL.")
     print("=" * 55)
 
     engine.dispose()
