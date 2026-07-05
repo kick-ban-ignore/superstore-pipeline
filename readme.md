@@ -3,11 +3,12 @@
 A minimalistic production-style ELT pipeline built with Python, PostgreSQL and Streamlit.
 
 ## How to Run
-### Running Locally. 
-- dashboard.py requires a local PostgreSQL instance. See .env.example for configuration.
 
 ### Running online. 
 - dashboard_online.py does not need a database and reads directly from a csv. You can see it live here:  https://superstore-pipelinegit-hcueiwmlwn7tarjtfmftgk.streamlit.app/
+
+### Running Locally. 
+- dashboard.py requires a local PostgreSQL instance. See .env.example for configuration.
 
 ### 1. Install dependencies
 - pip install -r requirements.txt
@@ -22,11 +23,11 @@ A minimalistic production-style ELT pipeline built with Python, PostgreSQL and S
 
 ## Stack
 CSV Files -> Python/pandas -> PostgreSQL -> Streamlit Dashboard
-- **Python** – Data loading & orchestration
-- **PostgreSQL** – Data warehouse
-- **SQLAlchemy** – Database connection
-- **Streamlit** – Dashboard
-- **Plotly** – Charts
+- **Python** - Data loading & orchestration
+- **PostgreSQL** - Data warehouse
+- **SQLAlchemy** - Database connection
+- **Streamlit** - Dashboard
+- **Plotly** - Charts
 
 ## Dashboard
 <img width="1920" height="919" alt="Screenshot 2026-07-05 at 19-14-03 🛒 Superstore Sales Performance" src="https://github.com/user-attachments/assets/11b3b73b-05d6-4926-b22f-ed7413a9ca9d" />

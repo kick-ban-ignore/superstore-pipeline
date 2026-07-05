@@ -124,6 +124,9 @@ st.sidebar.caption("PostgreSQL table: mart_sales_performance")
 current_time = datetime.now().strftime("%H:%M:%S")
 st.sidebar.caption("Loaded at: " + current_time )
 
+st.sidebar.caption('Made in Berlin by <a href="https://github.com/kick-ban-ignore" target="_blank" rel="noopener noreferrer">Max</a>, ❤️ and ☕')
+
+
 
 
 # -----------------------------------------------------------------------------
