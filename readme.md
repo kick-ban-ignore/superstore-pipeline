@@ -5,15 +5,15 @@ A minimalistic production-style ELT pipeline built with Python, PostgreSQL and S
 ## How to Run
 
 ### 1. Install dependencies
-pip install -r requirements.txt
+- pip install -r requirements.txt
 
 ### 2. Configure environment
-- check .env.example & fill in your PostgreSQL credentials
+- Check .env.example & fill in your PostgreSQL credentials
 
 ### 3. Run the pipeline
-python load_data.py      # Phase 1: Extract & Load
-python transform.py      # Phase 2: Transform
-streamlit run dashboard.py  # Phase 3: Serve
+- python load_data.py      # Phase 1: Extract & Load
+- python transform.py      # Phase 2: Transform
+- streamlit run dashboard.py  # Phase 3: Serve
 
 ## Stack
 CSV Files -> Python/pandas -> PostgreSQL -> Streamlit Dashboard
