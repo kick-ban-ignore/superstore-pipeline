@@ -14,14 +14,31 @@ from dotenv import load_dotenv
 # -----------------------------------------------------------------------------
 # 1. CONFIGURATION
 
-load_dotenv()
+load_dotenv()  # Works locally
 
-DB_URL = (
-    f"postgresql+psycopg2://"
-    f"{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
-    f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}"
-    f"/{os.getenv('DB_NAME')}"
-)
+def get_db_url():
+    """
+    Handles both local (.env) and Streamlit Cloud (st.secrets) credentials.
+    Tries Streamlit secrets first, falls back to .env for local dev.
+    """
+    try:
+        # Streamlit Cloud – credentials from secrets manager
+        return (
+            f"postgresql+psycopg2://"
+            f"{st.secrets['DB_USER']}:{st.secrets['DB_PASSWORD']}"
+            f"@{st.secrets['DB_HOST']}:{st.secrets['DB_PORT']}"
+            f"/{st.secrets['DB_NAME']}"
+        )
+    except (KeyError, FileNotFoundError):
+        # Local dev – credentials from .env
+        return (
+            f"postgresql+psycopg2://"
+            f"{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
+            f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}"
+            f"/{os.getenv('DB_NAME')}"
+        )
+
+DB_URL = get_db_url()
 
 # Page config
 st.set_page_config(
