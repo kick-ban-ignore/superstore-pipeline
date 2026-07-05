@@ -4,7 +4,10 @@ A minimalistic production-style ELT pipeline built with Python, PostgreSQL and S
 
 ## How to Run
 ### Running Locally. 
-- This app requires a local PostgreSQL instance. See .env.example for configuration.
+- dashboard.py requires a local PostgreSQL instance. See .env.example for configuration.
+
+### Running online. 
+- dashboard_online.py does not need a database and reads directly from a csv. You can see it live here:  https://superstore-pipelinegit-hcueiwmlwn7tarjtfmftgk.streamlit.app/
 
 ### 1. Install dependencies
 - pip install -r requirements.txt
