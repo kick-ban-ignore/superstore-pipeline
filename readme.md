@@ -3,6 +3,8 @@
 A minimalistic production-style ELT pipeline built with Python, PostgreSQL and Streamlit.
 
 ## How to Run
+### 🖥️ Running Locally. 
+- This app requires a local PostgreSQL instance. See .env.example for configuration.
 
 ### 1. Install dependencies
 - pip install -r requirements.txt
