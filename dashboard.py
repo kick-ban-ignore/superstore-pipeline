@@ -185,13 +185,13 @@ with col_left:
         .groupby("person")["total_profit"]
         .sum()
         .reset_index()
-        .sort_values("total_profit", ascending=False)  # ← Top to bottom
+        .sort_values("total_profit", ascending=False)
     )
 
     fig_bar = px.bar(
         profit_by_person,
-        x="person",                  # ← Person on X axis
-        y="total_profit",            # ← Profit on Y axis
+        x="person",
+        y="total_profit",
         color="total_profit",
         color_continuous_scale="Teal",
         labels={"total_profit": "Total Profit ($)", "person": ""},
@@ -202,8 +202,8 @@ with col_left:
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
         height=450,
-        xaxis_tickangle=-35,         # ← Angled labels so names don't overlap
-        margin=dict(l=20, r=20, t=20, b=120)  # ← Bottom margin for names
+        xaxis_tickangle=-35,         # Angled labels so names don't overlap
+        margin=dict(l=20, r=20, t=20, b=120)  # Bottom margin for names
     )
     fig_bar.update_traces(
         textposition="outside",
@@ -227,7 +227,7 @@ with col_right:
         values="total_profit",
         names="category",
         hole=0.55,
-        color_discrete_sequence=px.colors.qualitative.Set2
+        color_discrete_sequence=px.colors.qualitative.Pastel   
     )
     fig_donut.update_traces(
         textposition="inside",       
@@ -271,7 +271,7 @@ with col_left2:
         y="total_profit",            # ← Profit on Y axis
         color="category",
         barmode="stack",             # ← Stacked! Much cleaner than grouped
-        color_discrete_sequence=px.colors.qualitative.Set2,
+        color_discrete_sequence=px.colors.qualitative.Pastel,
         labels={"total_profit": "Total Profit ($)", "person": ""}
     )
     fig_grouped.update_layout(
@@ -317,7 +317,7 @@ with col_right2:
     st.plotly_chart(fig_margin, use_container_width=True)
     
 # -----------------------------------------------------------------------------
-# 9. DETAILED TABLE
+# 9. TABLE
 # -----------------------------------------------------------------------------
 
 st.markdown("---")

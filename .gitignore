@@ -1,4 +1,10 @@
 # PLZ ignore, uWu
 
+# Credentials
 .env
+
+# Notebooks
 notebook.ipynb
+
+# Data files
+data/*.csv
