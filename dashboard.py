@@ -159,7 +159,7 @@ col1, col2, col3, col4 = st.columns(4)
 total_sales  = filtered_df["total_sales"].sum()
 total_profit = filtered_df["total_profit"].sum()
 total_orders = filtered_df["total_orders"].sum()
-avg_margin   = (total_profit / total_sales * 100) if total_sales > 0 else 0
+avg_margin   = (total_profit / total_sales * 100) ## if total_sales > 0 else 0
 
 # European format helper
 # . for thousands separator, , for decimal separator
