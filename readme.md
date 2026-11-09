@@ -1,6 +1,6 @@
 # 🏪 Superstore Sales Pipeline
 
-A minimalistic production-style ELT pipeline built with Python, PostgreSQL and Streamlit / Metabase.
+A minimalistic production-style ELT pipeline built with Python, PostgreSQL and Streamlit / Metabase to showcase sales figures in a business context.
 
 ## How to Run
 ### Running Locally. 
